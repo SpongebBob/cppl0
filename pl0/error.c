@@ -3,7 +3,7 @@
 //  Compiler
 //
 //  Created by MacBook on 15/11/21.
-//  Copyright © 2015年 MacBook. All rights reserved.
+//  Copyright © 2015年 Microsoft. All rights reserved.
 //
 
 #include <stdio.h>

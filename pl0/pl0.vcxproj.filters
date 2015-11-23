@@ -15,34 +15,34 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Desktop\Compiler\error.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Desktop\Compiler\four_expression.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Desktop\Compiler\symtable.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Desktop\Compiler\tocken.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <ClCompile Include="error.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="four_expression.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="symtable.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="syntax.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="tocken.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Desktop\Compiler\error.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Desktop\Compiler\four_expression.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Desktop\Compiler\symtable.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Desktop\Compiler\syntax.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Desktop\Compiler\tocken.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
+    <ClInclude Include="error.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="four_expression.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="symtable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tocken.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,6 +10,19 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="error.c" />
+    <ClCompile Include="four_expression.c" />
+    <ClCompile Include="symtable.c" />
+    <ClCompile Include="syntax.c" />
+    <ClCompile Include="tocken.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="error.h" />
+    <ClInclude Include="four_expression.h" />
+    <ClInclude Include="symtable.h" />
+    <ClInclude Include="tocken.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{11AEFEF4-9239-495A-84CF-23234C6C7C85}</ProjectGuid>
     <RootNamespace>pl0</RootNamespace>
@@ -63,19 +76,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Desktop\Compiler\error.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Compiler\four_expression.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Compiler\symtable.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Compiler\tocken.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Desktop\Compiler\error.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Compiler\four_expression.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Compiler\symtable.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Compiler\syntax.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Compiler\tocken.c" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
