@@ -345,6 +345,9 @@ void function_declare()
                 my_error(19);//mising ')'
         }
         // TODO  there is some defferent
+#ifdef DEBUG
+		printf("SYM:%s", sym);
+#endif
 		if (symtype == COLON)
             getsym();
         else
@@ -421,9 +424,7 @@ void procdure_declare()
 
 void part_procedure(int name)
 {
-#ifdef DEBUG
-	printf("!!!!!!!!!!!!!!!!!!%d",symtype);
-#endif
+
     int t;
     if (symtype == CONST) {
         getsym();
@@ -468,7 +469,7 @@ void part_procedure(int name)
             statement();
         }
 #ifdef DEBUG
-		printf("@@@@@@@@@@@@@@@@@@@%d", symtype);
+		printf("SYM:%s", sym);
 #endif // DEBUG
         if(symtype == END)
             getsym();
@@ -645,6 +646,7 @@ void statement()
 		if (sym_tables[a].kind != k_proc) 
 		{
             getsym();
+			
 #ifdef DEBUG
 			printf("&???********%d", symtype);
 #endif
@@ -679,15 +681,12 @@ void statement()
                 else
                     my_error(49);//not array type
             }
-            else
+			else
+
                 my_error(50);//no legal :=
 		}
         else
         {
-
-#ifdef DEBUG
-			printf("&jianguile%d", symtype);
-#endif
             if(symtype == LP)
             {
                 getsym();
@@ -698,6 +697,8 @@ void statement()
                 else
                     my_error(51);//missing rp
             }
+			else
+				getsym();
             b = sym_tables[a].x;
             insert_4(four_call, a, b, 0);
         }
