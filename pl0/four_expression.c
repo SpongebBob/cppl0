@@ -96,7 +96,7 @@ void out_4_var(int x){
         else
             printf("%d",sym_tables[x].x);
     }
-    else if (sym_tables[x].kind == k_proc)
+    else if (sym_tables[x].kind == k_point)
         printf("(%s)",sym_tables[x].name);
 }
 

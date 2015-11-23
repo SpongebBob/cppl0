@@ -10,7 +10,7 @@
 #define tocken_h
 
 
-#define NALPHABET 22
+#define NALPHABET 21
 #define MAXLINE 255
 #define MAXSYM 255
 #define MAXVARDEC 100
@@ -68,10 +68,10 @@
 /*
  * type symbol 42-45
  * */
-#define T_IDENT	42
-#define T_CONST	43
-#define T_CHAR	44
-#define T_STRING 45
+#define T_IDENT	41
+#define T_CONST	42
+#define T_CHAR	43
+#define T_STRING 44
 
 extern char sym[MAXSYM];
 extern void init_tocken();

@@ -58,6 +58,11 @@ void get_type(struct sym_table *t)
             if(symtype==T_CONST)
             {
                 t->x =num;
+				getsym();
+#ifdef DEBUG
+				printf("sym:%s\n", sym);
+				printf("%d", symtype);
+#endif
                 if(symtype == RBP)
                     getsym();
                 else
@@ -117,12 +122,22 @@ void var_declare()
 //factor
 int syntax_factor()
 {
-    int a,b,t=0;
+    int a=0,b,t=0;
+#ifdef DEBUG
+	//printf("a:%d", a);
+	printf("sym:%s", sym);
+#endif
     if(symtype == T_IDENT)
     {
         a = find_symtable(sym);
-        if(a == 0||sym_tables[a].kind == k_proc)
-            my_error(8);//can not get value (is not a factor)
+		if (a == 0 || sym_tables[a].kind == k_proc)
+		{
+#ifdef DEBUG
+			printf("a:%d", a);
+			printf("sym:%s", sym);
+#endif
+			my_error(8);//can not get value (is not a factor)
+		}
         if(sym_tables[a].kind != k_func)
         {
             getsym();
@@ -390,6 +405,10 @@ void procdure_declare()
         else
             my_error(26);//mising ';'
         part_procedure(p);
+#ifdef DEBUG
+		printf("sym:%s", sym);
+#endif // DEBUG
+
         if(symtype == SEM)
             getsym();
         else
@@ -542,6 +561,9 @@ int get_const_value()
         t=num;
     }else
         my_error(37);//unknown const_value
+#ifdef DEBUG
+	printf("\n~~~~~~~~~~~~~~~NUM:%d~~~~~~~~~~~~~~~~\n", num);
+#endif
     return t;
 }
 
@@ -662,11 +684,6 @@ void statement()
 		}
         else
         {
-
-
-
-
-
 
 #ifdef DEBUG
 			printf("&jianguile%d", symtype);
@@ -834,36 +851,47 @@ void statement()
     else if (symtype == CASE)
     {
         // case
-        int a,b,t1,l;
+        int a=0,b=0,c=0,t1,l;
+		getsym();
         a = syntax_expression();
-        getsym();
         if(symtype == OF)
         {
+			getsym();
             b = get_const_value();
+			c = new_temp_const_symtable(b);
             int t = new_temp_var_symtable();
-            insert_4(four_neq, a, b, t);
+            insert_4(four_neq, a, c, t);
             t1 = insert_4(four_jz, t, 0, 0);
             getsym();
-            if(symtype == COLON)
-                statement();
+			if (symtype == COLON)
+			{
+				getsym();
+				statement();
+			}
             else
                 my_error(66);//missing ':'
             l = new_lable_4();
             set_des_4(t1, l);
             while (symtype == SEM) {
-                
+				getsym();
                 b = get_const_value();
+				c = new_temp_const_symtable(b);
+
                 t = new_temp_var_symtable();
-                insert_4(four_neq, a, b, t);
+                insert_4(four_neq, a, c, t);
                 t1 = insert_4(four_jz, t, 0, 0);
                 getsym();
-                if(symtype == COLON)
-                    statement();
+				if (symtype == COLON)
+				{
+					getsym();
+					statement();
+				}
                 else
                     my_error(67); //missing ";"
 	               l = new_lable_4();
                 set_des_4(t1, l);
             }
+			getsym();
         }
         else
             my_error(68);//missing of
@@ -884,5 +912,7 @@ int main(int argc, const char * argv[]) {
     else
         my_error(69);//missing '.'
 	out_all4();
+	c = getchar();
+	c = getchar();
     return 0;
 }
