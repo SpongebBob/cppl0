@@ -19,4 +19,6 @@ void my_error(int id)
     char c;
     printf("error:%d",id);
     c=getchar();
+	c = getchar();
+
 }

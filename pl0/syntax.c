@@ -87,9 +87,7 @@ void get_type(struct sym_table *t)
         my_error(5);//不是基本类型或者数组
     
 	getsym();
-#ifdef DEBUG
-	printf("@@@@@@@@@@@@@@@@@@@%d", symtype);
-#endif // DEBUG
+
 
 }
 void var_declare()
@@ -141,9 +139,7 @@ int syntax_factor()
         if(sym_tables[a].kind != k_func)
         {
             getsym();
-#ifdef DEBUG
-			printf("$$$111$$$%d",symtype);
-#endif
+
             if(symtype ==LBP)
             {
                 getsym();
@@ -163,9 +159,10 @@ int syntax_factor()
         }else //函数调用
         {
             getsym();
-#ifdef DEBUG
-			printf("$$$222$$$%d", symtype);
-#endif
+
+			if (sym_tables[a].x != 0 && symtype != LP 
+				|| sym_tables[a].x==0&&symtype == LP)
+				my_error(100);
             if(symtype == LP)
             {
                 getsym();
@@ -335,6 +332,7 @@ void function_declare()
         if(symtype == LP)
         {
             getsym();
+			if (symtype == RP) my_error(101); //no zero form arg
             if(symtype == VAR||symtype == T_IDENT)
             {
                 x =form_arg();
@@ -391,6 +389,7 @@ void procdure_declare()
         if(symtype == LP)
         {
             getsym();
+			if (symtype == RP) my_error(101);//no zero form arg
             if(symtype == VAR||symtype == T_IDENT)
             {
                 x =form_arg();
@@ -409,7 +408,7 @@ void procdure_declare()
             my_error(26);//mising ';'
         part_procedure(p);
 #ifdef DEBUG
-		printf("sym:%s", sym);
+		printf("\n\npart_procedure_sym:%s\n\n", sym);
 #endif // DEBUG
 
         if(symtype == SEM)
@@ -463,14 +462,15 @@ void part_procedure(int name)
     if(symtype == BEGIN)
     {
         getsym();
+#ifdef DEBUG
+		printf("\npart_sym:%s", sym);
+#endif // DEBUG
         statement();
         while (symtype == SEM) {
             getsym();
             statement();
         }
-#ifdef DEBUG
-		printf("SYM:%s", sym);
-#endif // DEBUG
+
         if(symtype == END)
             getsym();
         else
@@ -539,6 +539,8 @@ int form_arg()
         else
             break;
     }
+	if (count == 0) 
+		my_error(101);//cannot zerp form arg
     return count;
 
 }
@@ -714,8 +716,8 @@ void statement()
                 else
                     my_error(51);//missing rp
             }
-			else
-				getsym();
+			//else
+				//getsym();
             b = sym_tables[a].x;
             insert_4(four_call, a, b, 0);
         }
@@ -749,13 +751,16 @@ void statement()
     else if (symtype == BEGIN)
     {
         getsym();
+#ifdef DEBUG
+		printf("\nSYM_statement:%s", sym);
+#endif
         statement();
         while (symtype == SEM) {
             getsym();
             statement();
         }
 #ifdef DEBUG
-		printf("SYM:%s", sym);
+		printf("SYM_begin:%s", sym);
 #endif
         if(symtype == END)
             getsym();
@@ -813,15 +818,23 @@ void statement()
                 getsym();
             else
                 my_error(59);//missing type??
+#ifdef DEBUG
+			printf("\nafter_write RP%s", sym);
+#endif // DEBUG
         }
         else
         {
             a =syntax_expression();
             insert_4(four_write, 0, 0, a);
+
+
             if(symtype == RP)
                 getsym();
             else
                 my_error(60);//missing type??
+#ifdef DEBUG
+			printf("\nafter_write2 RP%s", sym);
+#endif // DEBUG
         }
     }
     else if (symtype == FOR)
