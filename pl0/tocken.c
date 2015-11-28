@@ -277,4 +277,3 @@ char *OUTPUT[]=
     "CHARCON",
     "STRCON",
 };
-

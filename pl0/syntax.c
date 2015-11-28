@@ -572,6 +572,9 @@ int get_const_value()
 int deal_var()
 {
     int a,b = 0,t = 0;
+#ifdef DEBUG
+	printf("VAR_SYM:%s\n", sym);
+#endif
     if(symtype == T_IDENT)
     {
         a = find_symtable(sym);
@@ -588,6 +591,7 @@ int deal_var()
                     my_error(39);//wrong array,not a arry;
                 t = new_temp_var_symtable();
                 insert_4(four_getadd, a, b, t);
+				getsym();
             }
             else
                 my_error(40);//missing ']'
@@ -609,8 +613,17 @@ void real_arg(int func_p)
     int i,t = 0;
     for(i = 1;i <= sym_tables[func_p].x;i++)
     {
+#ifdef DEBUG
+		printf("\nNUM:%d", sym_tables[func_p].x);
+#endif
+
         if (sym_tables[func_p+i].kind == k_point) {
+#ifdef DEBUG
+			printf("\nSYM:%s", sym);
+			printf("DEAL VAR\n");
+#endif
             t = deal_var();
+
             insert_4(four_push, i, 0, t);
         }else{
             t = syntax_expression();
@@ -638,11 +651,7 @@ void statement()
         if(a == 0)
             my_error(44);//can't find in sym table
         if(sym_tables[a].kind == k_const)
-            my_error(45);//can't be const in the left of '='
-#ifdef DEBUG
-		printf("&???!********%d", symtype);
-#endif
-		
+            my_error(45);//can't be const in the left of '='	
 		if (sym_tables[a].kind != k_proc) 
 		{
             getsym();
@@ -665,7 +674,11 @@ void statement()
             }
             else if(symtype == LBP)
             {
+#ifdef DEBUG
+				printf("SYM:%s", sym);
+#endif
                 getsym();//array
+
                 b = syntax_expression();
                 if(symtype == RBP)
                     getsym();
@@ -687,6 +700,10 @@ void statement()
 		}
         else
         {
+			getsym();
+#ifdef DEBUG
+			printf("Here is lp:%s", sym);
+#endif		
             if(symtype == LP)
             {
                 getsym();
@@ -737,6 +754,9 @@ void statement()
             getsym();
             statement();
         }
+#ifdef DEBUG
+		printf("SYM:%s", sym);
+#endif
         if(symtype == END)
             getsym();
         else
