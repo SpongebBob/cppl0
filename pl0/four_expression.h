@@ -62,14 +62,4 @@ void out_all4();
 void out_one_4(struct four_expression);
 
 
-
-
-
-
-
-
-
-
-
-
 #endif /* four_expression_h */

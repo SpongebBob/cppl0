@@ -169,6 +169,7 @@ int syntax_factor()
                 real_arg(a);
                 t =new_temp_var_symtable();
                 insert_4(four_call, a, sym_tables[a].x, t);
+				a = t;
                 if(symtype == RP)
                     getsym();
                 else
@@ -178,6 +179,7 @@ int syntax_factor()
             {
                 t= new_temp_var_symtable();
                 insert_4(four_call, a, sym_tables[a].x, t);
+				a = t;
             }
         }
         //else if (symtype == LP)
@@ -186,7 +188,7 @@ int syntax_factor()
     else if (symtype == LP)
     {
         getsym();
-        b = syntax_expression();
+        a = syntax_expression();
         if (symtype == RP)
             getsym();
         else
@@ -327,6 +329,9 @@ void function_declare()
         else
             my_error(18);//redifine
         getsym();
+#ifdef DEBUG
+		printf("\t\tNowL:%d", nowlevel);
+#endif
         nowlevel++;
         //define
         if(symtype == LP)
@@ -384,6 +389,9 @@ void procdure_declare()
         else
             my_error(24);//redifine
         getsym();
+#ifdef DEBUG
+		printf("\t\tNowL:%d", nowlevel);
+#endif
         nowlevel++;
         //define
         if(symtype == LP)
@@ -483,7 +491,7 @@ void part_procedure(int name)
 }
 void init_syntax()
 {
-    nowlevel =0;
+    nowlevel = 0;
     sym_tables[0].name = "main";
     sym_tables[0].x = 0;
     sym_tables[0].type = 0;
@@ -946,6 +954,8 @@ int main(int argc, const char * argv[]) {
     else
         my_error(69);//missing '.'
 	out_all4();
+	init_mips();
+	out_all_mips();
 	c = getchar();
 	c = getchar();
     return 0;

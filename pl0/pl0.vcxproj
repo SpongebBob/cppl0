@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="error.c" />
     <ClCompile Include="four_expression.c" />
+    <ClCompile Include="mips.c" />
     <ClCompile Include="symtable.c" />
     <ClCompile Include="syntax.c" />
     <ClCompile Include="tocken.c" />
@@ -20,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="error.h" />
     <ClInclude Include="four_expression.h" />
+    <ClInclude Include="mips.h" />
     <ClInclude Include="symtable.h" />
     <ClInclude Include="tocken.h" />
   </ItemGroup>
