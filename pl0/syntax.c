@@ -6,7 +6,7 @@
 //  Copyright © 2015年 MacBook. All rights reserved.
 //
 #define _CRT_SECURE_NO_WARNINGS
-#define DEBUG
+//#define DEBUG
 #include <stdio.h>
 #include <string.h>
 #include "error.h"
@@ -70,13 +70,13 @@ void get_type(struct sym_table *t)
                 if(symtype == OF)
                     getsym();
                 else
-                    my_error(1);//missinng OF
+                    my_error(2);//missinng OF
                 if(symtype == CHAR)
                     t->type = t_char;
                 else if (symtype == INT)
                     t->type = t_integer;
                 else
-                    my_error(2);//unkown type
+                    my_error(3);//unkown type
             }
             else
                 my_error(3);//must be unsigned integer
@@ -337,7 +337,7 @@ void function_declare()
         if(symtype == LP)
         {
             getsym();
-			if (symtype == RP) my_error(101); //no zero form arg
+			if (symtype == RP) my_error(19); //no zero form arg
             if(symtype == VAR||symtype == T_IDENT)
             {
                 x =form_arg();
@@ -345,7 +345,7 @@ void function_declare()
             if(symtype == RP)
                 getsym();
             else
-                my_error(19);//mising ')'
+                my_error(20);//mising ')'
         }
         // TODO  there is some defferent
 #ifdef DEBUG
@@ -354,13 +354,13 @@ void function_declare()
 		if (symtype == COLON)
             getsym();
         else
-            my_error(20);//mising ';'
+            my_error(21);//mising ';'
         if(symtype == INT)
             t = t_integer;
         else if (symtype == CHAR)
             t = t_char;
         else
-            my_error(21);//unknown type
+            my_error(3);//unknown type
         settype_symtable(p, x, t);
 		getsym();
 		if (symtype == SEM)
@@ -374,7 +374,7 @@ void function_declare()
             my_error(22);//misising ident
     }
     else
-        my_error(23);//missing ident
+        my_error(22);//missing ident
     
 }
 void procdure_declare()
@@ -387,7 +387,7 @@ void procdure_declare()
         if(p == 0|| sym_tables[p].level!=nowlevel)
             p=insert_symtable(sym, k_proc);
         else
-            my_error(24);//redifine
+            my_error(16);//redifine
         getsym();
 #ifdef DEBUG
 		printf("\t\tNowL:%d", nowlevel);
@@ -397,7 +397,7 @@ void procdure_declare()
         if(symtype == LP)
         {
             getsym();
-			if (symtype == RP) my_error(101);//no zero form arg
+			if (symtype == RP) my_error(19);//no zero form arg
             if(symtype == VAR||symtype == T_IDENT)
             {
                 x =form_arg();
@@ -405,7 +405,7 @@ void procdure_declare()
             if(symtype == RP)
                 getsym();
             else
-                my_error(25);//mising ')'
+                my_error(12);//mising ')'
         }
         settype_symtable(p, x, 0);
         
@@ -413,7 +413,7 @@ void procdure_declare()
         if(symtype == SEM)
             getsym();
         else
-            my_error(26);//mising ';'
+            my_error(7);//mising ';'
         part_procedure(p);
 #ifdef DEBUG
 		printf("\n\npart_procedure_sym:%s\n\n", sym);
@@ -422,10 +422,10 @@ void procdure_declare()
         if(symtype == SEM)
             getsym();
         else
-            my_error(27);//misising ident
+            my_error(22);//misising ident
     }
     else
-        my_error(28);//missing ident
+        my_error(22);//missing ident
     
 }
 
@@ -444,7 +444,7 @@ void part_procedure(int name)
             getsym();
         }
         else
-            my_error(29);//missing ';'
+            my_error(21);//missing ';'
     }
     if (symtype == VAR) {
         getsym();
@@ -454,7 +454,7 @@ void part_procedure(int name)
             if(symtype == SEM)
                 getsym();
             else
-                my_error(30);//missing ';'
+                my_error(21);//missing ';'
 #ifdef DEBUG
 			printf("symtype,%d",symtype);
 #endif // DEBUG
@@ -482,9 +482,9 @@ void part_procedure(int name)
         if(symtype == END)
             getsym();
         else
-            my_error(31);//missing END
+            my_error(23);//missing END
     }else
-        my_error(32); //no_part_procedure
+        my_error(24); //no_part_procedure
     nowlevel--;
     insert_4(four_end, 0, 0, name);
     
@@ -512,14 +512,14 @@ int form_arg()
             kind = k_point;
         }
         if(symtype != T_IDENT)
-            my_error(33);//there is no ident
+            my_error(22);//there is no ident
         while (symtype == T_IDENT) {
             t = find_symtable(sym);
             if (t==0 || sym_tables[t].level!=nowlevel) {
                 p[num_dec] = insert_symtable(sym, kind);
             }
             else
-                my_error(34);//redefind
+                my_error(18);//redefind
             num_dec++;
             count++;
             getsym();
@@ -529,14 +529,14 @@ int form_arg()
         if (symtype == COLON) {
             getsym();
         }else
-            my_error(35);//missing colon
+            my_error(25);//missing colon
         if (symtype == INT) {
             t = t_integer;
         }
         else if (symtype == CHAR)
             t = t_char;
         else
-            my_error(36);//unknown type
+            my_error(3);//unknown type
         getsym();
         for(i =0;i<num_dec;i++)
         {
@@ -548,7 +548,7 @@ int form_arg()
             break;
     }
 	if (count == 0) 
-		my_error(101);//cannot zerp form arg
+		my_error(19);//cannot  be zero form arg
     return count;
 
 }
@@ -571,7 +571,7 @@ int get_const_value()
         //not get a sym?
         t=num;
     }else
-        my_error(37);//unknown const_value
+        my_error(26);//unknown const_value
 #ifdef DEBUG
 	printf("\n~~~~~~~~~~~~~~~NUM:%d~~~~~~~~~~~~~~~~\n", num);
 #endif
@@ -589,7 +589,7 @@ int deal_var()
     {
         a = find_symtable(sym);
         if(sym_tables[a].kind == k_const||sym_tables[a].kind == k_proc)
-            my_error(38);//wrong type ,it should be a k_point
+            my_error(27);//wrong type ,it should be a k_point
         getsym();
         if(symtype == LBP)
         {
@@ -598,13 +598,13 @@ int deal_var()
             if(symtype == RBP)
             {
                 if(sym_tables[a].x == 0)
-                    my_error(39);//wrong array,not a arry;
+                    my_error(28);//wrong array,not a arry;
                 t = new_temp_var_symtable();
                 insert_4(four_getadd, a, b, t);
 				getsym();
             }
             else
-                my_error(40);//missing ']'
+                my_error(9);//missing ']'
         }
         else if(symtype == COMMA||symtype == RP)
         {
@@ -612,9 +612,9 @@ int deal_var()
             insert_4(four_getadd, a, b, t);
         }
         else
-            my_error(41);//wrong type;
+            my_error(29);//wrong type;
     }else
-        my_error(42);//must be ident
+        my_error(30);//must be ident
     return t;
 }
 //real_arg()
@@ -641,11 +641,13 @@ void real_arg(int func_p)
         }
         if(symtype == COMMA)
             getsym();
-        else if (symtype == RP)
-        {
-            if(i!=sym_tables[func_p].x)
-                my_error(43);//wrong arg num
-        } //need a error deal?
+		else if (symtype == RP)
+		{
+			if (i != sym_tables[func_p].x)
+				my_error(31);//wrong arg num
+		} //need a error deal?
+		else
+			my_error(12);
     
     }
 
@@ -659,9 +661,9 @@ void statement()
     {
         a = find_symtable(sym);
         if(a == 0)
-            my_error(44);//can't find in sym table
+            my_error(32);//can't find in sym table
         if(sym_tables[a].kind == k_const)
-            my_error(45);//can't be const in the left of '='	
+            my_error(33);//can't be const in the left of '='	
 		if (sym_tables[a].kind != k_proc) 
 		{
             getsym();
@@ -680,7 +682,7 @@ void statement()
                 {
                     insert_4(four_bec, b, 0, a);
                 }else
-                    my_error(46);//can't assign to a procedure
+                    my_error(34);//can't assign to a procedure
             }
             else if(symtype == LBP)
             {
@@ -693,20 +695,20 @@ void statement()
                 if(symtype == RBP)
                     getsym();
                 else
-                    my_error(47);//missing ]
+                    my_error(9);//missing ]
                 if(symtype == BECOME)
                     getsym();
                 else
-                    my_error(48);//missing :=
+                    my_error(35);//missing :=
                 c = syntax_expression();
                 if(sym_tables[a].kind == k_var && sym_tables[a].x > 0)
                     insert_4(four_bec, c, b, a);
                 else
-                    my_error(49);//not array type
+                    my_error(36);//not array type
             }
 			else
 
-                my_error(50);//no legal :=
+                my_error(37);//no legal :=
 		}
         else
         {
@@ -722,7 +724,7 @@ void statement()
                     getsym();
                 }
                 else
-                    my_error(51);//missing rp
+                    my_error(12);//missing rp
             }
 			//else
 				//getsym();
@@ -738,7 +740,7 @@ void statement()
         if(symtype == THEN)
             getsym();
         else
-            my_error(52);//missing THEN
+            my_error(38);//missing THEN
         statement();
         if(symtype == ELSE)
         {
@@ -773,7 +775,7 @@ void statement()
         if(symtype == END)
             getsym();
         else
-            my_error(53); // missing END
+            my_error(23); // missing END
     }
     else if(symtype == READ)
     {
@@ -781,9 +783,9 @@ void statement()
         if(symtype == LP)
             getsym();
         else
-            my_error(54);//missing lp
+            my_error(39);//missing lp
         if(symtype!=T_IDENT)
-            my_error(55);//missing ident
+            my_error(40);//missing ident
         while (symtype == T_IDENT) {
             a = find_symtable(sym);
             if(a!= 0&&(sym_tables[a].kind == k_var
@@ -791,7 +793,7 @@ void statement()
                        ||sym_tables[a].kind == k_point))
                 insert_4(four_read, 0, 0, a);
             else
-                my_error(56);//can not write to a static ident
+                my_error(41);//can not write to a static ident
             getsym();
             if(symtype == COMMA)
                 getsym();
@@ -800,16 +802,44 @@ void statement()
                 getsym();
                 break;
             }else
-                my_error(57);//missing COMMA or RP
+                my_error(42);//missing COMMA or RP
         }
     }
+	else if (symtype == REPEAT)
+	{
+		getsym();
+		t1 = new_lable_4();
+		statement();
+		if (symtype == UNTIL)
+			getsym();
+		else
+			my_error(43);//missing UNTIL
+		a = condition();
+		insert_4(four_jz, a, 0, t1);
+		// do some thing for REPEAT-UNTIL
+	}
+	else if (symtype == WHILE)
+	{
+		getsym();
+		t1 = new_lable_4();
+		a = condition();
+		b =insert_4(four_jz, a, 0, 0);
+		if (symtype == DO)
+			getsym();
+		else
+			my_error(44);//missing DO
+		statement();
+		insert_4(four_jmp, 0, 0, t1);
+		t2 = new_lable_4();
+		set_des_4(b, t2);
+	}
     else if (symtype == WRITE)
     {
         getsym();
         if(symtype == LP)
             getsym();
         else
-            my_error(58);//error missing lp
+            my_error(39);//error missing lp
         if(symtype == T_STRING)
         {
             a =insert_symtable(sym, k_const);
@@ -825,7 +855,7 @@ void statement()
             if(symtype == RP)
                 getsym();
             else
-                my_error(59);//missing type??
+                my_error(20);//missing rp
 #ifdef DEBUG
 			printf("\nafter_write RP%s", sym);
 #endif // DEBUG
@@ -839,7 +869,7 @@ void statement()
             if(symtype == RP)
                 getsym();
             else
-                my_error(60);//missing type??
+                my_error(20);//missing rp
 #ifdef DEBUG
 			printf("\nafter_write2 RP%s", sym);
 #endif // DEBUG
@@ -852,12 +882,12 @@ void statement()
         {
             a = find_symtable(sym);
             if(a == 0||sym_tables[a].kind!=k_var)
-                my_error(61);//For var is illegal
+                my_error(45);//For var is illegal
             getsym();
             if(symtype == BECOME)
                 getsym();
             else
-                my_error(62);//need :=
+                my_error(35);//need :=
             b = syntax_expression();
             insert_4(four_bec, b, 0, a);
             if(symtype == TO)
@@ -866,7 +896,7 @@ void statement()
             }else if(symtype == DOWNTO)
                 isTO = -1;
             else
-                my_error(63);//unknown type ,need to or down to
+                my_error(46);//unknown type ,need to or down to
             getsym();
             c = new_temp_const_symtable(isTO);
             t1 = new_lable_4();
@@ -880,7 +910,7 @@ void statement()
             if(symtype ==DO)
                 getsym();
             else
-                my_error(64);//missing do
+                my_error(44);//missing do
             statement();
             insert_4(four_add, a, c, a);
             insert_4(four_jmp, 0, 0, t1);
@@ -888,7 +918,7 @@ void statement()
             set_des_4(b, t2);
         }
         else
-            my_error(65);//missing ident to store;
+            my_error(40);//missing ident to store;
     }
     else if (symtype == CASE)
     {
@@ -902,7 +932,7 @@ void statement()
             b = get_const_value();
 			c = new_temp_const_symtable(b);
             int t = new_temp_var_symtable();
-            insert_4(four_neq, a, c, t);
+            insert_4(four_eq, a, c, t);
             t1 = insert_4(four_jz, t, 0, 0);
             getsym();
 			if (symtype == COLON)
@@ -911,7 +941,7 @@ void statement()
 				statement();
 			}
             else
-                my_error(66);//missing ':'
+                my_error(21);//missing ':'
             l = new_lable_4();
             set_des_4(t1, l);
             while (symtype == SEM) {
@@ -920,7 +950,7 @@ void statement()
 				c = new_temp_const_symtable(b);
 
                 t = new_temp_var_symtable();
-                insert_4(four_neq, a, c, t);
+                insert_4(four_eq, a, c, t);
                 t1 = insert_4(four_jz, t, 0, 0);
                 getsym();
 				if (symtype == COLON)
@@ -929,7 +959,7 @@ void statement()
 					statement();
 				}
                 else
-                    my_error(67); //missing ";"
+                    my_error(21); //missing ";"
 	               l = new_lable_4();
                 set_des_4(t1, l);
             }
@@ -952,7 +982,7 @@ int main(int argc, const char * argv[]) {
     if(symtype == PERIOD)
         getsym();
     else
-        my_error(69);//missing '.'
+        my_error(21);//missing '.'
 	out_all4();
 	init_mips();
 	out_all_mips();

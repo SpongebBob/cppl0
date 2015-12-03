@@ -10,7 +10,7 @@
 #define tocken_h
 
 
-#define NALPHABET 21
+#define NALPHABET 23
 #define MAXLINE 255
 #define MAXSYM 255
 #define MAXVARDEC 100
@@ -36,47 +36,49 @@
 #define OF		14
 #define PROC	15
 #define READ	16
-#define THEN	17
-#define TO		18
-#define VAR		19
-#define WHILE	20
-#define WRITE	21
+#define REPEAT  17 
+#define THEN	18
+#define TO		19
+#define UNTIL   20
+#define VAR		21
+#define WHILE	22
+#define WRITE	23
 
 /*
  * other symbol 23-41
  * */
-#define	PLUS	22
-#define	MINUS	23
-#define	MULT	24
-#define	DIV		25
-#define	COMMA	26
-#define	PERIOD	27
-#define	SEM		28
-#define	COLON	29
-#define	RBP		30
-#define	LBP		31
-#define	RP		32
-#define	LP		33
-#define	BECOME	34
-#define	EQ		35
-#define NEQ		36
-#define SMO		37
-#define SMOE	38
-#define	BIG		39
-#define BIGE	40
+#define	PLUS	24
+#define	MINUS	25
+#define	MULT	26
+#define	DIV		27
+#define	COMMA	28
+#define	PERIOD	29
+#define	SEM		30
+#define	COLON	31
+#define	RBP		32
+#define	LBP		33
+#define	RP		34
+#define	LP		35
+#define	BECOME	36
+#define	EQ		37
+#define NEQ		38
+#define SMO		39
+#define SMOE	40
+#define	BIG		41
+#define BIGE	42
 
 /*
  * type symbol 42-45
  * */
-#define T_IDENT	41
-#define T_CONST	42
-#define T_CHAR	43
-#define T_STRING 44
+#define T_IDENT	43
+#define T_CONST	44
+#define T_CHAR	45
+#define T_STRING 46
 
 extern char sym[MAXSYM];
 extern void init_tocken();
 extern int getsym();
-extern int num,symtype;
+extern int num,symtype,linep;
 
 
 

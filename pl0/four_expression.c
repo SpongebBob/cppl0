@@ -71,6 +71,7 @@ char *out4[]=
 };
 
 void out_all4(){
+	printf("\nfour expressions:\n");
     for (int i = 1; i<fourtable_p; i++) {
         printf("%d",i);
         out_one_4(four_codes[i]);

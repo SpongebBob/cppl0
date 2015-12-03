@@ -38,8 +38,10 @@ char *alphabet[] =
     "of",
     "procedure",
     "read",
+	"repeat",
     "then",
     "to",
+	"until",
     "var",
     "while",
     "write"
