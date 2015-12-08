@@ -17,7 +17,7 @@ int getsym();
 //
 FILE *fin,*fout;
 int symnumber[256];
-int linelen,linep,symtype,num,t;
+int linelen,linep,symtype,num,t,line_num = 1;
 char line[MAXLINE],sym[MAXSYM];
 char ch;
 char *alphabet[] =
@@ -67,6 +67,7 @@ void getline2buffer()
 }
 void getch1()
 {
+	if (ch == '\n')  line_num++;
     if( !isspace(ch) && ch!='\"')
     {
         sym[t++] = ch;

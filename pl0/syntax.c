@@ -703,12 +703,13 @@ void statement()
                 c = syntax_expression();
                 if(sym_tables[a].kind == k_var && sym_tables[a].x > 0)
                     insert_4(four_bec, c, b, a);
+
                 else
                     my_error(36);//not array type
             }
 			else
 
-                my_error(37);//no legal :=
+                my_error(37);//no legal := or no function
 		}
         else
         {
@@ -973,6 +974,9 @@ void statement()
 int main(int argc, const char * argv[]) {
     // insert code here...
 	char c;
+	printf("************************\n");
+	printf("Please Input File Name:\n");
+	printf("************************\n");
 	init_tocken();
     init_syntax();
     init_symtable();
@@ -983,9 +987,18 @@ int main(int argc, const char * argv[]) {
         getsym();
     else
         my_error(21);//missing '.'
+	printf("************************\n");
+	printf("Compile Success\n");
+	printf("************************\n");
 	out_all4();
 	init_mips();
+	printf("************************\n");
+	printf("Gen to the result.asm \n");
+	printf("************************\n");
 	out_all_mips();
+	printf("************************\n");
+	printf("presse any key to exit\n");
+	printf("************************\n");
 	c = getchar();
 	c = getchar();
     return 0;

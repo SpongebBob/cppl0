@@ -63,8 +63,8 @@ void my_error(int id)
     char c;
     printf("\nerror:%d,",id);
 	printf("%s,", message[id]);
-	printf("in line:%d.\n",linep);
-	printf("press any key to skip\n", linep);
+	printf("in line:%d.\n",line_num);
+	printf("press any key to skip\n");
     c=getchar();
 	c = getchar();
 

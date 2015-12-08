@@ -78,7 +78,7 @@
 extern char sym[MAXSYM];
 extern void init_tocken();
 extern int getsym();
-extern int num,symtype,linep;
+extern int num,symtype,linep,line_num;
 
 
 
