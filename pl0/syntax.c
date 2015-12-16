@@ -987,7 +987,7 @@ int main(int argc, const char * argv[]) {
         getsym();
     else
         my_error(21);//missing '.'
-	printf("************************\n");
+	printf("\n************************\n");
 	printf("Compile Success\n");
 	printf("************************\n");
 	out_all4();
