@@ -1,0 +1,77 @@
+const  b = 10 , n = 6;
+
+var x,y,g,m:integer;
+    i:integer;
+    a,c,d:integer;
+	sum,sumarray:integer;
+
+
+procedure testcondition(var fArg1:integer);
+begin
+	case fArg1 of 
+			1: write("it is 1");
+			2: write("it is 2");
+			3: write("it is 3");
+			4: write("it is 4")
+	end
+end;
+
+procedure testarray;
+var array1 : array [10] of integer;
+begin
+	for i:=10 downto 1 do
+		array1[i] := i;
+	for i:=10 downto 1 do
+		sumarray := sumarray + array1[i]
+end;
+
+
+
+procedure swap;
+  var temp:integer;
+  begin
+	temp:=x;
+    x:=y;
+    y:=temp
+  end;
+  
+function fact:integer;
+    begin
+        if a>1 then
+        begin
+            a:=a-1;
+            fact := (a+1)*fact
+        end
+        else
+            fact := 1
+    end;
+  
+
+
+function mod(var fArg1,fArg2:integer):integer;
+  begin
+    fArg1:=fArg1-fArg1/fArg2*fArg2;
+    mod:=fArg1
+  end;
+
+begin
+  for i:=3 downto 1 do
+  begin
+   write("input x: ");
+   read(x);
+   write("input y: ");
+   read(y);  
+   x:=mod(x,y);
+   write("x mod y = ",x)
+  end;
+  
+  write("test recursion");
+  a:=n;
+  write(fact);
+  write("input test condition");
+  read(a);
+  write("test condition");
+  testcondition(a);
+  testarray;
+  write("test recursion",sumarray)
+end.
