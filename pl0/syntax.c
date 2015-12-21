@@ -134,7 +134,9 @@ int syntax_factor()
 			printf("a:%d", a);
 			printf("sym:%s", sym);
 #endif
-			my_error(8);//can not get value (is not a factor)
+			if (a == 0) my_error(47);
+			else 
+				my_error(8);//can not get value (is not a factor)
 		}
         if(sym_tables[a].kind != k_func)
         {
@@ -793,8 +795,18 @@ void statement()
                        ||sym_tables[a].kind == k_func
                        ||sym_tables[a].kind == k_point))
                 insert_4(four_read, 0, 0, a);
-            else
-                my_error(41);//can not write to a static ident
+			else
+			{
+#ifdef DEBUG
+				printf("%d\n", a);
+				printf("%d\n", sym_tables[a].kind);
+				printf("%s\n", sym_tables[a].name);
+#endif // DEBUG
+				if (a!=0)
+				my_error(41);//can not write to a static ident
+				if (a == 0)
+					my_error(47);
+			}
             getsym();
             if(symtype == COMMA)
                 getsym();

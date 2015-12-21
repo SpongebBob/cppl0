@@ -1,0 +1,49 @@
+const A=1,B=-2,C='a';
+var a1,a2:integer;
+		b1,b2:integer;
+		c1:array[5] of integer;
+procedure p1(var t1:integer);
+begin
+	c1[0]:=t1;
+	t1:=t1*c1[0]
+end;
+procedure p2(t1:integer);
+begin
+	if t1<=3
+then
+	begin
+		c1[1]:=c1[0]+t1;
+		t1:=t1+1;
+		p2(t1)
+	end
+end;
+function f1(t2:integer):integer;
+var t3:integer;
+begin
+	t3:=t2+A;
+	f1:= C+B+t3
+end;
+begin
+read(a1);
+read(a2);
+p1(a1);
+p2(1);
+b2:=a1*a2;
+for b1:=1 to a2
+do b2:=b2-b1;
+write(a1);
+write(a2);
+if a1>a2
+then
+	a1:=f1(a1)
+else
+	a2:=f1(a2);
+write("0123",a1);
+write(a2);
+write(b1);
+write(b2);
+write(c1[0]);
+write(c1[1]);
+write(c1[2])
+
+end.

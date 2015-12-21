@@ -17,8 +17,8 @@ char *message[] =
 	"missing '['",//4
 	"not arry or basic type",//5
 	"redefined",//6
-	"mssing , ;",//7
-	"can not get value (is not a factor)",//8
+	"mssing  ;",//7
+	"can not get value from this ident",//8
 	"missing ']'",//9
 	"not  arry",//10
 	"can not deal with arg",//11
@@ -56,7 +56,8 @@ char *message[] =
 	"missing UNTIL",//43
 	"missing DO",//44
 	"For var is illegal",//45
-	"unknown type ,need to or down to"//46
+	"unknown type ,need to or down to",//46
+	"undefined "//47
 };
 void my_error(int id)
 {

@@ -1,0 +1,4 @@
+已完成语义分析和四元式的生成
+错误处理目前只记录了错误id,还未分类
+测试程序为12191040_test.txt
+消除DEBUG信息。注释syntax.c中的#define DEBUG
