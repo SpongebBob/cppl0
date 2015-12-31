@@ -56,7 +56,6 @@ void getline2buffer()
             ch = EOF;
             return ;
         }
-        //	printf("%s",line);
         linep = 0;
         linelen = (int)strlen(line);
     }
