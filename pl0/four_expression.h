@@ -49,9 +49,17 @@ struct four_expression
     int des;
     int level;
 };
+struct basic_block
+{
+	int start;
+	int end;
+	int level;
+};
 //block is not define
 extern struct four_expression four_codes[MAXFOURCODE];
-extern int fourtable_p,four_lable_p;
+extern struct four_expression four_codes_afteropt[MAXFOURCODE];
+extern struct basic_block basic_blocks[200];
+extern int fourtable_p, four_lable_p, fourtable_afteropt_p,basic_blockp;
 //
 int insert_4(int,int,int,int);
 int new_lable_4();
@@ -60,6 +68,6 @@ void set_des_4(int,int);
 void init_4();
 void out_all4();
 void out_one_4(struct four_expression);
-
+void out_all4_afteropt();
 
 #endif /* four_expression_h */

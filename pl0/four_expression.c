@@ -11,7 +11,54 @@
 #include <stdio.h>
 extern int nowlevel;
 struct four_expression four_codes[MAXFOURCODE];
-int fourtable_p,four_lable_p;
+struct four_expression four_codes_afteropt[MAXFOURCODE];
+struct basic_block basic_blocks[200];
+int fourtable_p,four_lable_p,fourtable_afteropt_p,basic_blockp;
+
+void divide_block()
+{
+	int i, t;
+	for (i = 1; i < fourtable_p; i++)
+	{
+		if (four_codes[i].type == four_lable || four_codes[i].type == four_enter)
+		{
+			if (basic_blocks[basic_blockp].start != 0)
+			{
+				basic_blocks[basic_blockp].end = i - 1;
+				basic_blockp++;
+			}
+		}
+		if (four_codes[i].type == four_jmp || four_codes[i].type == four_jz)
+		{
+			if (basic_blocks[basic_blockp].start != 0)
+			{
+				basic_blocks[basic_blockp].end = i ;
+				basic_blockp++;
+				basic_blocks[basic_blockp].start = i + 1;
+			}
+		}
+		if (four_codes[i].type == four_end)
+		{
+
+			if (basic_blocks[basic_blockp].start != 0)
+			{
+				basic_blocks[basic_blockp].end = i;
+				basic_blockp++;
+			}
+		}
+	}
+	if (basic_blocks[basic_blockp].start != 0)
+	{
+		basic_blocks[basic_blockp].end = fourtable_p - 1;
+		basic_blockp++;
+	}
+	for (i = 1; i < basic_blockp; i++)
+	{
+		t = basic_blocks[i].start;
+		basic_blocks[i].level = four_codes[t].level;
+		//build_dag();
+	}
+}
 //dag flag not now
 int insert_4(int type,int src1,int src2,int des){
     four_codes[fourtable_p].type = type;
@@ -69,7 +116,15 @@ char *out4[]=
     "LABLE",
     "ENTER"
 };
-
+void out_all4_afteropt()
+{	
+	printf("\nfour expressions after opt:\n");
+	for (int i = 1; i < fourtable_afteropt_p; i++)
+	{
+		printf("%d", i);
+		out_one_4(four_codes_afteropt[i]);
+	}
+}
 void out_all4(){
 	printf("\nfour expressions:\n");
     for (int i = 1; i<fourtable_p; i++) {
@@ -135,5 +190,6 @@ void out_one_4(struct four_expression a){
     }
     printf("\n");
 }
+//划分基本快
 
 

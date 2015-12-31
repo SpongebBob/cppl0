@@ -14,6 +14,7 @@
     <ClCompile Include="error.c" />
     <ClCompile Include="four_expression.c" />
     <ClCompile Include="mips.c" />
+    <ClCompile Include="opt.c" />
     <ClCompile Include="symtable.c" />
     <ClCompile Include="syntax.c" />
     <ClCompile Include="tocken.c" />
