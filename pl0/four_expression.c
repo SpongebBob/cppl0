@@ -56,7 +56,7 @@ void divide_block()
 	{
 		t = basic_blocks[i].start;
 		basic_blocks[i].level = four_codes[t].level;
-		//build_dag();
+		gen_dag(basic_blocks[i].start,basic_blocks[i].end,basic_blocks[i].level);
 	}
 }
 //dag flag not now

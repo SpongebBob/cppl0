@@ -11,7 +11,7 @@
 
 #define MAXFOURCODE 2000
 #define MAXBLOCK
-
+#define four_var -1
 //+-*/
 #define four_add 1
 #define four_minus 2
