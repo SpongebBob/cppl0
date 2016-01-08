@@ -9,11 +9,68 @@
 #include "four_expression.h"
 #include "symtable.h"
 #include <stdio.h>
+
+
 extern int nowlevel;
 struct four_expression four_codes[MAXFOURCODE];
 struct four_expression four_codes_afteropt[MAXFOURCODE];
 struct basic_block basic_blocks[200];
-int fourtable_p,four_lable_p,fourtable_afteropt_p,basic_blockp;
+int fourtable_p,four_lable_p,fourtable_afteropt_p=1,basic_blockp;
+//计算后继集合
+void calc_aftercome()
+{
+	int i ,t,p,q;
+	
+	for (i = 0; i < basic_blockp; i++)
+	{
+		for (t = basic_blocks[i].start; t <= basic_blocks[i].end; t++)
+		{
+			if (four_codes_afteropt[t].type == four_add || four_codes_afteropt[t].type == four_minus
+				|| four_codes_afteropt[t].type == four_div || four_codes_afteropt[t].type == four_mul
+				|| four_codes_afteropt[t].type == four_big || four_codes_afteropt[t].type == four_bige
+				|| four_codes_afteropt[t].type == four_less || four_codes_afteropt[t].type == four_lesse
+				|| four_codes_afteropt[t].type == four_eq || four_codes_afteropt[t].type == four_neq
+				|| four_codes_afteropt[t].type == four_bec)
+				basic_blocks[i].def[basic_blocks[i].defp++] = four_codes_afteropt[t].des;
+
+			if (four_codes_afteropt[t].type == four_jz)
+			{
+				basic_blocks[i].houji[0] = i+1;
+				for (p = 0; p < fourtable_afteropt_p; p++)
+				{
+					//four_codes[a.des].des
+					if (four_codes_afteropt[p].des == four_codes_afteropt[four_codes_afteropt[t].des].des && four_codes_afteropt[p].type == four_lable)
+					{
+						//找到p所在的基本块
+						for (q = 0; q < basic_blockp; q++)
+						{
+							if (basic_blocks[q].start == p)
+								basic_blocks[i].houji[1] = q;
+							basic_blocks[i].houji[0] = i+1;
+								
+						}
+					}
+				}
+			}
+			if (four_codes_afteropt[t].type == four_jmp)
+			{
+				for (p = 0; p < fourtable_afteropt_p; p++)
+				{
+					if (four_codes_afteropt[p].des == four_codes_afteropt[four_codes_afteropt[t].des].des&&four_codes_afteropt[p].type == four_lable)
+					{
+						for (q = 0; q < basic_blockp; q++)
+						{
+							if (basic_blocks[q].start == p)
+							   basic_blocks[i].houji[0] = q;
+						}
+					}
+				}
+
+			}
+
+		}
+	}
+}
 
 void divide_block()
 {
@@ -27,6 +84,7 @@ void divide_block()
 				basic_blocks[basic_blockp].end = i - 1;
 				basic_blockp++;
 			}
+			basic_blocks[basic_blockp].start = i;
 		}
 		if (four_codes[i].type == four_jmp || four_codes[i].type == four_jz)
 		{
@@ -52,13 +110,17 @@ void divide_block()
 		basic_blocks[basic_blockp].end = fourtable_p - 1;
 		basic_blockp++;
 	}
-	for (i = 1; i < basic_blockp; i++)
+	for (i = 0; i < basic_blockp; i++)
 	{
 		t = basic_blocks[i].start;
 		basic_blocks[i].level = four_codes[t].level;
 		gen_dag(basic_blocks[i].start,basic_blocks[i].end,basic_blocks[i].level);
 	}
+	//calc_aftercome();
+	out_all4_afteropt();
+	
 }
+
 //dag flag not now
 int insert_4(int type,int src1,int src2,int des){
     four_codes[fourtable_p].type = type;

@@ -10,4 +10,6 @@
 #define error_h
 
 extern void my_error(int);
+extern int error_place;
+extern int error_flag;
 #endif /* error_h */

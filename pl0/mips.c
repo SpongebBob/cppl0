@@ -8,6 +8,8 @@
 FILE *file_out;
 int use[MAXREG];
 int get_memory(int i, int nowlevel, int *base);
+struct four_expression *four_codes_to_mips;
+int use_opt = 0;
 
 int get_REG()
 {
@@ -53,20 +55,13 @@ int get_memory(int i, int nowlevel, int *base)
 	d_level = nowlevel - sym_tables[i].level;
 	a = get_REG();
 	*base = a;
-	//$a =$fp
-	//addi,fp
 	fprintf(file_out, "\t add,%s,%s,$0\n", r_name[a], r_name[r_fp]);
 	if (sym_tables[i].kind == k_func || sym_tables[i].kind == k_proc)
 		d_level--;
-	//lw $a ,-8($a)????
 	for (j = 0; j < d_level; j++)
 	{
-		//alkjfdhaslkfdshajfjhdsalojhf
-		//fprintf(file_out, "\t\t\tnow:level:%d\n", nowlevel);4/8
-		// -4
 		fprintf(file_out, "\t lw,%s,-4(%s)\n", r_name[a], r_name[a]);
 	}
-	//fprintf(file_out, "#\t\t\tnow:%s,No:%d,mem%d\n", sym_tables[i].name,i,sym_tables[i].mem);
 	if (sym_tables[i].kind == k_func)
 		return -OFFSET;
 	return -(sym_tables[i].mem + OFFSET);
@@ -102,10 +97,10 @@ void set_string()
 	fprintf(file_out, "\t.data\n");
 	for (i = 1; i < fourtable_p; i++)
 	{
-		if (four_codes[i].type == four_write
-			&&sym_tables[four_codes[i].des].type == t_string)
+		if (four_codes_to_mips[i].type == four_write
+			&&sym_tables[four_codes_to_mips[i].des].type == t_string)
 		{
-			t = sym_tables[four_codes[i].des];
+			t = sym_tables[four_codes_to_mips[i].des];
 			fprintf(file_out, "_str%d:\t.asciiz\t\"%s\"\n", t.x, t.name);
 		}
 	}
@@ -153,6 +148,8 @@ void init_memory()
 }
 void init_mips()
 {
+	if (use_opt == 1) four_codes_to_mips = four_codes_afteropt;
+	else four_codes_to_mips = four_codes;
 	use[r_zero] = 1;
 	use[r_at] = 1;
 	use[r_V0] = 1;
@@ -166,6 +163,7 @@ void init_mips()
 	use[r_sp] = 1;
 	use[r_ra] = 1;
 	file_out = fopen("result.asm", "w");
+	//file_out_opt = fopen("result_opt.asm", "w");
 	set_string();
 	init_memory();
 }
@@ -209,18 +207,23 @@ void out_one_mpis(struct four_expression t)
 			fprintf(file_out, "\t mflo,%s\n", r_name[c]);
 			break;
 		case four_big:
+			//>
 			fprintf(file_out, "\t sgt,%s,%s,%s\n", r_name[c], r_name[a], r_name[b]);
 			break;
 		case four_bige:
+			//>=
 			fprintf(file_out, "\t sge,%s,%s,%s\n", r_name[c], r_name[a], r_name[b]);
 			break;
 		case four_less:
+			//小于则置1
 			fprintf(file_out, "\t slt,%s,%s,%s\n", r_name[c], r_name[a], r_name[b]);
 			break;
 		case four_lesse:
+			//小于等于则置1
 			fprintf(file_out, "\t sle,%s,%s,%s\n", r_name[c], r_name[a], r_name[b]);
 			break;
 		case four_eq:
+			//seq 相等置1
 			fprintf(file_out, "\t seq,%s,%s,%s\n", r_name[c], r_name[a], r_name[b]);
 			break;
 		case four_neq:
@@ -235,11 +238,12 @@ void out_one_mpis(struct four_expression t)
 		free_reg(base);
 		break;
 	case four_jmp:
-		fprintf(file_out, "\t b,$L%d\n", four_codes[t.des].des);
+		fprintf(file_out, "\t b,$L%d\n", four_codes_to_mips[t.des].des);
 		break;
 	case four_jz:
 		a = move_into_reg(t.src1, t.level);
-		fprintf(file_out, "\t beqz,%s,$L%d\n", r_name[a], four_codes[t.des].des);
+		//==0 就跳到Lable
+		fprintf(file_out, "\t beqz,%s,$L%d\n", r_name[a], four_codes_to_mips[t.des].des);
 		free_reg(a);
 		break;
 	case four_bec:
@@ -278,6 +282,7 @@ void out_one_mpis(struct four_expression t)
 			fprintf(file_out, "\t add,%s,$fp,$0\n", r_name[a]);
 		else
 		{
+			//如何解决递归调用，调用的不是本层的方法。
 			get_memory(t.src1, t.level, &base);
 			fprintf(file_out, "\t lw,%s,-4(%s)\n", r_name[a], r_name[base]);
 			free_reg(base);
@@ -432,6 +437,8 @@ void out_one_mpis(struct four_expression t)
 void out_all_mips()
 {
 	int i;
+	
+
 	fprintf(file_out,"\t.text\n");
 	fprintf(file_out, "main:\n");
 	fprintf(file_out, "\t add,$fp,$sp,$0\n");
@@ -440,7 +447,7 @@ void out_all_mips()
 	fprintf(file_out, "\t b,_main\n");
 	for (i = 1; i < fourtable_p;i++)
 	{
-		out_one_mpis(four_codes[i]);
+		out_one_mpis(four_codes_to_mips[i]);
 	}
 	fprintf(file_out, "\t li,$v0,10\n");
 	fprintf(file_out, "\t syscall\n");

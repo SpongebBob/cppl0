@@ -54,6 +54,12 @@ struct basic_block
 	int start;
 	int end;
 	int level;
+	int houji[2];
+	int def[30];
+	int use[30];
+	int in[30];
+	int out[30];
+	int defp;
 };
 //block is not define
 extern struct four_expression four_codes[MAXFOURCODE];
@@ -63,7 +69,7 @@ extern int fourtable_p, four_lable_p, fourtable_afteropt_p,basic_blockp;
 //
 int insert_4(int,int,int,int);
 int new_lable_4();
-int new_enter_4(int);
+extern int new_enter_4(int);
 void set_des_4(int,int);
 void init_4();
 void out_all4();

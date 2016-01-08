@@ -8,6 +8,10 @@
 
 #include <stdio.h>
 #include "tocken.h"
+
+int error_place;
+int error_flag;
+
 char *message[] =
 {
     "",//0
@@ -62,11 +66,18 @@ char *message[] =
 void my_error(int id)
 {
     char c;
-    printf("\nerror:%d,",id);
+    printf("\n\t*******error:%d,",id);
 	printf("%s,", message[id]);
 	printf("in line:%d.\n",line_num);
-	printf("press any key to skip\n");
+	printf("press any key to continue\n");
+	if (error_place == 5)
+	{
+		do{
+			getsym();
+		} while (symtype != SEM);
+		error_flag = 1;
+		
+	}
     c=getchar();
 	c = getchar();
-
 }
