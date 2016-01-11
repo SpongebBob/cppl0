@@ -73,5 +73,10 @@ begin
   write("test condition");
   testcondition(a);
   testarray;
-  write("test recursion",sumarray)
+  write("test recursion",sumarray);
+  g:=x+y;
+  m:=x+y;
+  a:=c+d;
+  g:=c+d;
+  write("DONE")
 end.

@@ -283,11 +283,13 @@ void out_one_mpis(struct four_expression t)
 		else
 		{
 			//如何解决递归调用，调用的不是本层的方法。
+			//base存放着调用的基地址，
 			get_memory(t.src1, t.level, &base);
 			fprintf(file_out, "\t lw,%s,-4(%s)\n", r_name[a], r_name[base]);
 			free_reg(base);
 		}
 		//保存当前$a = $fp8/4
+		//-8前一个帧，-4调用目标所在帧
 		fprintf(file_out, "\t sw,$fp,-8($sp)\n");
 		fprintf(file_out, "\t sw,%s,-4($sp)\n", r_name[a]);
 		fprintf(file_out, "\t sw,%s,-12($sp)\n", r_name[r_ra]);

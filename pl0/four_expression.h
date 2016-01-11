@@ -25,21 +25,21 @@
 #define four_eq 9
 #define four_neq 10
 //jmp,jz
-#define four_jmp 11
-#define four_jz 12
+#define four_jmp 11//
+#define four_jz 12//
 //bec call
-#define four_bec 13
-#define four_call 14
+#define four_bec 13//
+#define four_call 14//
 //read write push pop end
-#define four_read 15
-#define four_write 16
-#define four_push 17
-#define four_end 18
+#define four_read 15//
+#define four_write 16//
+#define four_push 17//
+#define four_end 18//
 //getarr getadd lable enter
 #define four_getarr 19
-#define four_getadd 20
-#define four_lable 21
-#define four_enter 22
+#define four_getadd 20//
+#define four_lable 21//
+#define four_enter 22//
 //end
 struct four_expression
 {
@@ -55,10 +55,10 @@ struct basic_block
 	int end;
 	int level;
 	int houji[2];
-	int def[30];
-	int use[30];
-	int in[30];
-	int out[30];
+	int def[101];
+	int use[101];
+	int in[101];
+	int out[101];
 	int defp;
 };
 //block is not define

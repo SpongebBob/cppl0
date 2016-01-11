@@ -1192,6 +1192,9 @@ void statement()
 }
 
 int main(int argc, const char * argv[]) {
+	int i;
+	if (freopen("D:\\output.txt", "w", stdout) == NULL)
+		fprintf(stderr, "error redirecting stdout\n");
     // insert code here...
 	char c;
 	printf("************************\n");
@@ -1222,5 +1225,6 @@ int main(int argc, const char * argv[]) {
 	printf("************************\n");
 	c = getchar();
 	c = getchar();
+	fclose(stdout);
     return 0;
 }

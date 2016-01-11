@@ -71,7 +71,117 @@ void calc_aftercome()
 		}
 	}
 }
+void calc_defuse()
+{
+	int i, t;
+	for (i = 0; i < basic_blockp; i++)
+	{
+		for (t = basic_blocks[i].start; t <= basic_blocks[i].end; t++)
+		{
+			switch (four_codes_afteropt[t].type)
+			{
+				case four_jz:
+					if (sym_tables[four_codes_afteropt[t].src1].name[0] != '_')
+						basic_blocks[i].use[four_codes_afteropt[t].src1] = 1;
+				break;
+				case four_add:
+				case four_minus:
+				case four_mul :
+				case  four_div:
+				case  four_big:
+				case  four_less:
+				case  four_bige:
+				case  four_lesse:
+				case  four_eq:
+				case  four_neq:
+					if (sym_tables[four_codes_afteropt[t].src1].name[0] != '_')
+						basic_blocks[i].use[four_codes_afteropt[t].src1] = 1;
+					if (sym_tables[four_codes_afteropt[t].src2].name[0] != '_')
+						basic_blocks[i].use[four_codes_afteropt[t].src2] = 1;
+					if (sym_tables[four_codes_afteropt[t].des].name[0] != '_'&&four_codes_afteropt[t].des != four_codes_afteropt[t].src1)
+						basic_blocks[i].def[four_codes_afteropt[t].des] = 1;
+				break;
+				case four_read:
+				case four_write:
+				case four_push:
+					if (sym_tables[four_codes_afteropt[t].des].name[0] != '_')
+						basic_blocks[i].use[four_codes_afteropt[t].des] = 1;
+				break;
+				case four_getadd:
+					if (sym_tables[four_codes_afteropt[t].src1].name[0] != '_')
+						basic_blocks[i].use[four_codes_afteropt[t].src1] = 1;
+				break;
+				case four_getarr:
+					if (sym_tables[four_codes_afteropt[t].src2].name[0] != '_')
+						basic_blocks[i].use[four_codes_afteropt[t].src2] = 1;
+				break;
+				case four_bec:
+					if (four_codes_afteropt[t].des != four_codes_afteropt[t].src1)
+					{
+						if (sym_tables[four_codes_afteropt[t].des].name[0] != '_')
+							basic_blocks[i].def[four_codes_afteropt[t].des] = 1;
+						if (sym_tables[four_codes_afteropt[t].src1].name[0] != '_')
+							basic_blocks[i].use[four_codes_afteropt[t].src1] = 1;
+					}
+				break;
+			}
+		}
+	}
+}
+void calc_inout()
+{
+	int i,t,p;
+	int m = 0;
+	while (m < 5)
+	{
+		for (i = basic_blockp; i >= 0; i--)
+		{
+			if (basic_blocks[i].houji[0] != 0)
+			{
+				t = basic_blocks[i].houji[0];
+				for (p = 0; p < 101; p++)
+				{
+					if (basic_blocks[t].in[p] != 0)
+						basic_blocks[i].out[p] = 1;
+				}
+			}
+			if (basic_blocks[i].houji[1] != 0)
+			{
+				t = basic_blocks[i].houji[1];
+				for (p = 0; p < 101; p++)
+				{
+					if (basic_blocks[t].in[p] != 0)
+						basic_blocks[i].out[p] = 1;
+				}
+			}
+			for (p = 0; p < 101; p++)
+			{
+				if (basic_blocks[i].use[p] != 0)
+					basic_blocks[i].in[p] = 1;
+				if (basic_blocks[i].out[p] == 1 && basic_blocks[i].def[p] == 0)
+					basic_blocks[i].in[p] = 1;
+			}
+		}
+		m++;
+	}
+	
+}
+void print_in()
+{
+	int i,p;
+	printf("\nin:\n");
+	for (i = basic_blockp-1; i >= 0; i--)
+	{
+		printf("\nBlock[%d] in:", i);
+		for (p = 0; p < 101; p++)
+		{
+			if (basic_blocks[i].in[p] == 1 && sym_tables[p].type != t_string)
+				printf(" %s", sym_tables[p].name);
+		}
+		printf("\n");
+	}
 
+}
 void divide_block()
 {
 	int i, t;
@@ -116,7 +226,10 @@ void divide_block()
 		basic_blocks[i].level = four_codes[t].level;
 		gen_dag(basic_blocks[i].start,basic_blocks[i].end,basic_blocks[i].level);
 	}
-	//calc_aftercome();
+	calc_aftercome();
+	calc_defuse();
+	calc_inout();
+	print_in();
 	out_all4_afteropt();
 	
 }
